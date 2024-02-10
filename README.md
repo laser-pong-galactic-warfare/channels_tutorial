@@ -14,7 +14,7 @@
 
 ### Async views
 
-A partir da versão 3.5, o Python ganhou a capacidade de realizar tarefas assíncronas. Aproveitando isso, o Django ganhou por padrão uma coisa chamada ["async views"](https://docs.djangoproject.com/en/5.0/topics/async/). São como as views convencionais, mas que permitem execução de código assíncrono (como chamadas a APIs externas) não bloqueante.
+A partir da versão 3.5 o Python ganhou a capacidade de realizar tarefas assíncronas. Aproveitando isso, o Django ganhou por padrão uma coisa chamada ["async views"](https://docs.djangoproject.com/en/5.0/topics/async/). São como as views convencionais, mas que permitem execução de código assíncrono (como chamadas a APIs externas) não bloqueante.
 
 **Exemplo de uso**: Digamos que tenhamos uma página que carrega uma lista de filmes vindas de uma API externa. Se ela for síncrona, primeiro precisamos esperar o retorno da API para só depois dar a resposta completa para o cliente. Já se ela for assíncrona, podemos fazer a página ser renderizada e enviada para o cliente e só depois de termos a resposta da API, enviarmos a lista de filmes, sem ter que fazer o usuário ficar esperando tudo.
 
