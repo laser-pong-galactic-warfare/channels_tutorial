@@ -49,7 +49,7 @@ As conexões feitas em no Channels com ASGI se dividem em dois componentes: um e
 
 ### Consumers
 
-Consumers são a principal abstração do Channels. Eles tem esse nome por "consumirem eventos". Eles permitem a criação de aplicações ASGI de forma simplificada.
+Consumers são a principal abstração do Channels. Eles tem esse nome por "consumirem eventos". Eles por si só já são pequenas aplicações ASGI, escritas de forma simplificada/abstraída.
 
 Eles são como as views do Django. A diferença é que as Views foram feitas para executar uma função e encerrar suas atividades depoius disso. Enquanto os consumers foram feitos para ficar rodando até que não sejam mais necessários, ou seja, quando um escopo for encerrado.
 
@@ -58,3 +58,19 @@ Eles nos permitem criar funções que serão chamadas sempre que um evento ocorr
 ### Resumo até aqui
 
 Daphne (ou outro servidor ASGI) vai receber as conexões e requisições e iniciar um processo da nossa aplicação e mantém esse processo rodando. Enquanto isso, Daphne vai repassar as requisições/eventos/frames para os consumers da nossa aplicação de forma assíncrona.
+
+## Outros conceitos importantes
+
+### [Roteamento e múltiplos protocólos](https://channels.readthedocs.io/en/latest/introduction.html#routing-and-multiple-protocols)
+
+É possível combinar vários consumers em um app maior, que no caso representará nosso projeto. Dessa forma podemos lidar com diferentes protocólos (como HTTP e WebSockets) numa única aplicação.
+
+Esse sistema de rotas é similar ao sistema de URLs do Django para as views, mas possibilitando conexões assíncronas.
+
+### Comunicação entre processos
+
+Cada intância do nosso projeto está rodando, a princípio, de forma independente a partir do nosso servidor ASGI. Entretanto, pode haver situações onde precisamos fazer com que uma instância se comunique com a outra, como em um chat em tempo real por exemplo.
+
+Para fazer isso nós poderiamos fazer as instâncias se comunicarem com o banco de dados (escrevendo e lendo dele), mas para facilitar isso o Channels introduz uma outra abstração que é a [**"channel layer"**](https://channels.readthedocs.io/en/latest/topics/channel_layers.html), que permite que a informação seja transmitida diretamente entre as instâncias da aplicação. Cada instância, que aqui podemos chamar de canal/*channel*, recebe um nome único e pode se juntar a grupos.
+
+Isso permite tanto comunicação ponto-a-ponto como em forma de transmissão/*broadcast*.
