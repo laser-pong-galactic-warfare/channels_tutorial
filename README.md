@@ -55,7 +55,7 @@ Eles são como as views do Django. A diferença é que as Views foram feitas par
 
 Eles nos permitem criar funções que serão chamadas sempre que um evento ocorrer, sem a necessidade de criar loops para isso. Além disso permitem escrever código tanto síncrono quanto assíncrono, além de cuidar automaticamente de multithreading (se/quando necessário).
 
-### Resumo até aqui
+## Resumo até aqui
 
 Daphne (ou outro servidor ASGI) vai receber as conexões e requisições e iniciar um processo da nossa aplicação e mantém esse processo rodando. Enquanto isso, Daphne vai repassar as requisições/eventos/frames para os consumers da nossa aplicação de forma assíncrona.
 
@@ -74,3 +74,29 @@ Cada intância do nosso projeto está rodando, a princípio, de forma independen
 Para fazer isso nós poderiamos fazer as instâncias se comunicarem com o banco de dados (escrevendo e lendo dele), mas para facilitar isso o Channels introduz uma outra abstração que é a [**"channel layer"**](https://channels.readthedocs.io/en/latest/topics/channel_layers.html), que permite que a informação seja transmitida diretamente entre as instâncias da aplicação. Cada instância, que aqui podemos chamar de canal/*channel*, recebe um nome único e pode se juntar a grupos.
 
 Isso permite tanto comunicação ponto-a-ponto como em forma de transmissão/*broadcast*.
+
+## Como rodar
+
+1. Comece aplicando as migrações ao seu banco de dados local:
+
+```bash
+python manage.py migrate
+```
+
+2. Você precisará ter um container Docker rodando o [Redis](https://redis.io/):
+
+```bash
+docker run --rm -p 6379:6379 redis:7
+```
+
+3. Você também precisará da extensão `channels_redis` para permitir a comunicação entre o Channels e o Redis:
+
+```bash
+python3 -m pip install channels_redis
+```
+
+4. Com isso feito, basta rodar o servidor:
+
+```bash
+python3 manage.py runserver
+```
